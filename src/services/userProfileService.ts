@@ -6,18 +6,27 @@ export async function getUserProfile(userId: string): Promise<IUserProfile> {
     return await UserProfile.findOne({userId: userId}).lean();
 }
 
-export async function getUserProfilesAround(long: number, lat: number, radius: number): Promise<IUserProfile[]> {
+export async function getUserProfilesAround(long: number, lat: number, radius: number, limit = 10): Promise<IUserProfile[]> {
     await checkAndConnectMongoose();
     return await UserProfile.find({
-        locationPoint: { $geoWithin: {$geometry: {type: 'Point', coordinates: [long, lat]}}}
-    }).lean();
+        locationPoint: {
+            $near: {
+                $geometry: {
+                   type: "Point" ,
+                   coordinates: [ long , lat ]
+                },
+                $maxDistance: radius,
+                $minDistance: 0
+              }
+        }
+    }).limit(limit).lean();
 }
 
-export async function getUserProfilesByCity(city: string): Promise<IUserProfile[]> {
+export async function getUserProfilesByCity(city: string, limit = 10): Promise<IUserProfile[]> {
     await checkAndConnectMongoose();
     return await UserProfile.find({
         "locationDetails.city": city
-    }).lean();
+    }).limit(limit).lean();
 }
 
 export async function upsertUserProfile(userId: string, userProfile: IUserProfile): Promise<IUserProfile> {

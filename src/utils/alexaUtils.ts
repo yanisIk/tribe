@@ -14,9 +14,9 @@ export const isGeolocationSupported = (handlerInput: HandlerInput): boolean => {
 
 }
 
-export const askForGeoPermissionResponse = (handlerInput: HandlerInput): Response => {
+export const askForGeoPermissionResponse = (handlerInput: HandlerInput, speechText: string): Response => {
     return handlerInput.responseBuilder
-            .speak('Tribe would like to use your location. To turn on location sharing, please go to your Alexa app, and follow the instructions.')
+            .speak(speechText)
             .withAskForPermissionsConsentCard(['alexa::devices:all:geolocation:read'])
             .getResponse();
 }

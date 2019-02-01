@@ -6,36 +6,40 @@ import { pointSchema, polygonSchema } from "./GeoJSONSchemas";
 export interface IUserProfile extends Document {
   userId?: string;
   email?: string;
-  surname?: string;
+  nickname?: string;
+  voiceGender?: string;
   assignedPollyVoice?: string;
   locationPoint?: {
     type: 'Point';
-    coordinates: [number] // [long, lat]
-  },
+    coordinates: [number, number]; // [long, lat]
+  };
   locationDetails?: {
     city: string;
     country: string;
     cityPolygon: {
-      type: 'Polygon',
+      type: 'Polygon';
       coordinates: [[
-        [number]
-      ]]
+        [number, number]
+      ]];
     };
-  },
+  };
 }
 
 // Define the User Profile schema.
 const UserProfileSchema = new Schema({
   userId: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  surname: { type: String },
+  email: { type: String, unique: true },
+  nickname: { type: String },
+  voiceGender: { type: String },
   assignedPollyVoice: { type: String },
   locationPoint: { type: pointSchema },
   locationDetails: { 
-    city: { type: String },
-    country: { type: String },
+    city: { type: String, index: true },
+    country: { type: String, index: true },
     cityPolygon: { type: polygonSchema }
   },
 });
+
+UserProfileSchema.index({ locationPoint: "2dsphere" });
 
 export const UserProfile: Model<IUserProfile> = model<IUserProfile>("UserProfile", UserProfileSchema);

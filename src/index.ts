@@ -8,6 +8,9 @@ import { LaunchRequestHandler } from "./controllers/welcomeHandler";
 import { BroadcastMessageHandler } from "./controllers/broadcastMessageHandler";
 import { ReadLastMessagesHandler } from "./controllers/readLastMessagesHandler";
 
+// Import interceptors
+import { UserProfileInterceptor } from "./controllers/userProfileLoader";
+
 /* LAMBDA SETUP */
 exports.handler = skillBuilder
   .addRequestHandlers(
@@ -19,6 +22,6 @@ exports.handler = skillBuilder
     // ExitHandler,
     // SessionEndedRequestHandler
   )
-//   .addRequestInterceptors(LocalizationInterceptor)
+  .addRequestInterceptors(UserProfileInterceptor)
 //   .addErrorHandlers(ErrorHandler)
   .lambda();
