@@ -1,0 +1,29 @@
+{
+  "name": "tribe",
+  "version": "1.0.0",
+  "description": "Alexa voice chat skill",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanisIk/tribe.git"
+  },
+  "author": "Yanis Ikene",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yanisIk/tribe/issues"
+  },
+  "homepage": "https://github.com/yanisIk/tribe#readme",
+  "dependencies": {
+    "ask-sdk": "^2.3.0",
+    "mongoose": "^5.4.8"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.3.11",
+    "@types/node": "^10.12.20"
+  }
+}
