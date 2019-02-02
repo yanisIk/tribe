@@ -1,7 +1,7 @@
 import { HandlerInput } from "ask-sdk";
-import { getUserInfos } from "../utils/alexaUtils";
-import { IUserProfile } from "../models/UserProfile";
-import { getUserProfile } from "../services/userProfileService";
+import { getUserInfos } from "../../utils/alexaUtils";
+import { IUserProfile } from "../../models/UserProfile";
+import { getUserProfile } from "../../services/userProfileService";
 
 export const UserProfileInterceptor = {
     async process(handlerInput: HandlerInput) {

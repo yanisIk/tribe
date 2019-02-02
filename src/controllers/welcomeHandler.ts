@@ -18,19 +18,21 @@ export const LaunchRequestHandler : RequestHandler = {
 
     let speechText: string;
 
-    if (!isGeolocationSupported(handlerInput)) {
-      speechText = `${WELCOME_MESSAGE} ... To make the skill work, Tribe would like to use your location. To turn on location sharing, please go to your Alexa app, and follow the instructions.`
-      return askForGeoPermissionResponse(handlerInput, speechText);
-    }
-
     speechText = WELCOME_MESSAGE;
+
+    console.log(` ------- WELCOME 0 --------`)
 
     // If already existing profile, just update coordinates and simply welcome the user
     if (userProfile && userProfile.nickname && userProfile.voiceGender) {
+      
+      console.log(` ------- WELCOME 1.0 --------`)
+
       if (userProfile.locationPoint.coordinates !== [coordinate.longitudeInDegrees, coordinate.latitudeInDegrees]) {
         userProfile.locationPoint.coordinates = [coordinate.longitudeInDegrees, coordinate.latitudeInDegrees];
         await upsertUserProfile(userId, userProfile);
       }
+
+      console.log(` ------- WELCOME 1.1 --------`)
   
       return handlerInput.responseBuilder
         .speak(speechText)
@@ -38,6 +40,8 @@ export const LaunchRequestHandler : RequestHandler = {
 
     // If no profile, ask to setup the profile here
     } else {
+
+      console.log(` ------- WELCOME 2 --------`)
 
       speechText = `I see that you did not create your avatar yet. To do that, ask me to create an avatar`;
 

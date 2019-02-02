@@ -13,6 +13,13 @@ export const BroadcastMessageHandler : RequestHandler = {
   },
   async handle(handlerInput : HandlerInput) : Promise<Response> {
 
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    if (!sessionAttributes['nickname']) {
+      return handlerInput.responseBuilder
+        .speak('Hold on, to communicate with your tribe, you first need to create an avatar. Go ahead and say: create my avatar')
+        .getResponse();
+    }
+
     // @ts-ignore request.intent issue
     const slots = handlerInput.requestEnvelope.request.intent.slots;
     const messageString = slots['message'] && slots['message'].value ? slots['message'].value.toLowerCase() : undefined;

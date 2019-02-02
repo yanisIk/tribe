@@ -11,6 +11,11 @@ export const UserProfileSetupHandler : RequestHandler = {
   },
   async handle(handlerInput : HandlerInput) : Promise<Response> {
 
+    if (!isGeolocationSupported(handlerInput)) {
+        const permissionText = `Before setting up your avatar, Tribe needs to use your location. To turn on location sharing, please go to your Alexa app, and follow the instructions.`
+        return askForGeoPermissionResponse(handlerInput, permissionText);
+    }
+
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
     
     // @ts-ignore request.intent issue
