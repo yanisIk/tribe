@@ -10,7 +10,8 @@ export const SessionEndedRequestHandler = {
         const request = requestEnvelope.request;
      
         // @ts-ignore
-        console.log(`Session ended with reason: ${request.reason}: ${request.error.type}, ${request.error.message}`);
+        console.log(`Session ended with reason:`);
+        console.log(request);
 
         return handlerInput.responseBuilder.getResponse();
     },

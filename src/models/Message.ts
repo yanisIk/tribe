@@ -29,6 +29,8 @@ const MessageSchema = new Schema({
     city: { type: String, index: true },
     country: { type: String, index: true },
   },
+}, {
+  timestamps: true
 });
 
 MessageSchema.index({ locationPoint: "2dsphere" });

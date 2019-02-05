@@ -2,7 +2,7 @@ import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
 import { getMessagesAround, getMessagesByCity, insertMessage } from "../services/messageService";
 import { getUserProfile, getUserProfilesAround, getUserProfilesByCity } from "../services/userProfileService";
-import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse } from "../utils/alexaUtils";
+import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse, getUserCountryAndPostalCode } from "../utils/alexaUtils";
 import { IMessage } from "../models/Message";
 import { IUserProfile } from "../models/UserProfile";
 
@@ -14,9 +14,11 @@ export const BroadcastMessageHandler : RequestHandler = {
   async handle(handlerInput : HandlerInput) : Promise<Response> {
 
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
     if (!sessionAttributes['nickname']) {
       return handlerInput.responseBuilder
         .speak('Hold on, to communicate with your tribe, you first need to create an avatar. Go ahead and say: create my avatar')
+        .reprompt('Go ahead and say: create my avatar')
         .getResponse();
     }
 
@@ -24,15 +26,19 @@ export const BroadcastMessageHandler : RequestHandler = {
     const slots = handlerInput.requestEnvelope.request.intent.slots;
     const messageString = slots['message'] && slots['message'].value ? slots['message'].value.toLowerCase() : undefined;
 
-    const userInfos = getUserInfos(handlerInput);
-    const userProfile: IUserProfile = await getUserProfile(userInfos.userId);
-
     const message: IMessage | any = { message: messageString, 
-                                      userId: userInfos.userId, 
-                                      nickname: userProfile.nickname, 
-                                      assignedPollyVoice: userProfile.assignedPollyVoice, 
-                                      locationPoint: userProfile.locationPoint, 
-                                      locationDetails: userProfile.locationDetails
+                                      userId: sessionAttributes['userId'], 
+                                      nickname: sessionAttributes['nickname'], 
+                                      assignedPollyVoice: sessionAttributes['assignedPollyVoice'], 
+                                      locationPoint: {
+                                        type: 'Point', 
+                                        coordinates: [sessionAttributes['longitude'], sessionAttributes['latitude']]
+                                    },
+                                    locationDetails: {
+                                        city: sessionAttributes['city'],
+                                        country: sessionAttributes['countryCode'],
+                                        cityPolygon: null
+                                    }                              
                                     };
     await insertMessage(message);
 

@@ -38,6 +38,8 @@ const UserProfileSchema = new Schema({
     country: { type: String, index: true },
     cityPolygon: { type: polygonSchema }
   },
+}, {
+  timestamps: true
 });
 
 UserProfileSchema.index({ locationPoint: "2dsphere" });

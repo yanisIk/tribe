@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
-import { Response, services } from 'ask-sdk-model';
-import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse } from "../utils/alexaUtils";
-import { getUserProfile, upsertUserProfile } from "../services/userProfileService";
+import { Response } from 'ask-sdk-model';
+import { getUserInfos, getUserCountryAndPostalCode } from "../utils/alexaUtils";
+import { createUserProfile } from "../services/userProfileService";
 import { IUserProfile } from "../models/UserProfile";
 
 export const UserProfileSetupHandler : RequestHandler = {
@@ -11,40 +11,36 @@ export const UserProfileSetupHandler : RequestHandler = {
   },
   async handle(handlerInput : HandlerInput) : Promise<Response> {
 
-    if (!isGeolocationSupported(handlerInput)) {
-        const permissionText = `Before setting up your avatar, Tribe needs to use your location. To turn on location sharing, please go to your Alexa app, and follow the instructions.`
-        return askForGeoPermissionResponse(handlerInput, permissionText);
-    }
-
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    
     // @ts-ignore request.intent issue
     const slots = handlerInput.requestEnvelope.request.intent.slots;
     const nickname = slots['nickname'] && slots['nickname'].value ? slots['nickname'].value.toLowerCase() : undefined;
     const voiceGender = slots['voiceGender'] && slots['voiceGender'].value ? slots['voiceGender'].value.toLowerCase() : undefined;
 
-    const {userId, deviceId, coordinate} = getUserInfos(handlerInput);
+    const {userId, deviceId} = getUserInfos(handlerInput);
+    const locationDetails = await getUserCountryAndPostalCode(handlerInput);
 
     const userProfile: IUserProfile | any = {   userId: userId,
                                                 nickname: nickname,
+                                                voiceGender: voiceGender,
                                                 assignedPollyVoice: '',
                                                 locationPoint: {
                                                     type: 'Point', 
-                                                    coordinates: [coordinate.longitudeInDegrees, coordinate.latitudeInDegrees]
+                                                    coordinates: [locationDetails.lon, locationDetails.lat]
                                                 },
                                                 locationDetails: {
-                                                    city: '',
-                                                    country: '',
+                                                    city: locationDetails.city,
+                                                    country: locationDetails.countryCode,
                                                     cityPolygon: null
                                                 }
                                             };
 
-    await upsertUserProfile(userId, userProfile);
+    await createUserProfile(userProfile);
 
-    const speechText = `Alright ${nickname} ! You're ready to go, your tribe awaits you !`
+    const speechText = `Alright ${nickname} ! You're ready to go, your ${userProfile.locationDetails.city} tribe awaits you !`
 
     return handlerInput.responseBuilder
       .speak(speechText)
+      .withShouldEndSession(true)
       .getResponse();
   },
 };

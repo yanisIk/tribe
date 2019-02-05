@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
 import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse } from "../utils/alexaUtils";
-import { getUserProfile, upsertUserProfile } from "../services/userProfileService";
+import { getUserProfile, createUserProfile } from "../services/userProfileService";
 import { IUserProfile } from "../models/UserProfile";
 import { UserProfileSetupHandler } from "./userProfileSetupHandler";
 
@@ -11,29 +11,17 @@ export const LaunchRequestHandler : RequestHandler = {
   },
   async handle(handlerInput : HandlerInput) : Promise<Response> {
 
-    const WELCOME_MESSAGE = 'Welcome to Tribe ! The skill that lets you communicate with your nearby tribe in a funny and anonymous way.';
-    
-    const {userId, deviceId, coordinate} = getUserInfos(handlerInput);
-    const userProfile: IUserProfile = await getUserProfile(userId);
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+
+    const WELCOME_MESSAGE = `Welcome ${sessionAttributes['nickname'] ? 'back' : ''} to Tribe ${sessionAttributes          ['nickname'] || ''} ! ${sessionAttributes['nickname'] ? '' : 'The skill that lets you communicate with your nearby  tribe in a funny and anonymous way.'}`;
 
     let speechText: string;
 
-    speechText = WELCOME_MESSAGE;
-
-    console.log(` ------- WELCOME 0 --------`)
-
     // If already existing profile, just update coordinates and simply welcome the user
-    if (userProfile && userProfile.nickname && userProfile.voiceGender) {
+    if (sessionAttributes['nickname']) {
       
-      console.log(` ------- WELCOME 1.0 --------`)
+      speechText = WELCOME_MESSAGE;
 
-      if (userProfile.locationPoint.coordinates !== [coordinate.longitudeInDegrees, coordinate.latitudeInDegrees]) {
-        userProfile.locationPoint.coordinates = [coordinate.longitudeInDegrees, coordinate.latitudeInDegrees];
-        await upsertUserProfile(userId, userProfile);
-      }
-
-      console.log(` ------- WELCOME 1.1 --------`)
-  
       return handlerInput.responseBuilder
         .speak(speechText)
         .getResponse();
@@ -41,13 +29,12 @@ export const LaunchRequestHandler : RequestHandler = {
     // If no profile, ask to setup the profile here
     } else {
 
-      console.log(` ------- WELCOME 2 --------`)
-
-      speechText = `I see that you did not create your avatar yet. To do that, ask me to create an avatar`;
+      const repromptText = `I see that you did not create your avatar yet. To do that, say: create my avatar`;
+      speechText = `${WELCOME_MESSAGE} ... ${repromptText}`;
 
       return handlerInput.responseBuilder
         .speak(speechText)
-        .reprompt(speechText)
+        .reprompt(repromptText)
         .getResponse();
     }
   },
