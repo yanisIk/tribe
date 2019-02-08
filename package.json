@@ -22,7 +22,8 @@
     "ask-sdk": "^2.3.0",
     "mongoose": "^5.4.8",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "ssml-builder": "^0.4.3"
   },
   "devDependencies": {
     "@types/mongoose": "^5.3.11",

@@ -1,9 +1,5 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
-import { Response, services } from 'ask-sdk-model';
-import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse } from "../utils/alexaUtils";
-import { getUserProfile, createUserProfile } from "../services/userProfileService";
-import { IUserProfile } from "../models/UserProfile";
-import { UserProfileSetupHandler } from "./userProfileSetupHandler";
+import { Response } from 'ask-sdk-model';
 
 export const LaunchRequestHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {
@@ -13,32 +9,51 @@ export const LaunchRequestHandler : RequestHandler = {
 
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-    const WELCOME_MESSAGE = `Welcome ${sessionAttributes['nickname'] ? 'back' : ''} to Tribe ${sessionAttributes          ['nickname'] || ''} ! ${sessionAttributes['nickname'] ? '' : 'The skill that lets you communicate with your nearby  tribe in a funny and anonymous way.'}`;
+    const repromptText = `I see that you did not create your avatar yet. To do that, say: create my avatar`;
 
-    let speechText: string;
+    const speechText = 
+     `<speak>
+        <audio src='soundbank://soundlibrary/ambience/amzn_sfx_crowd_bar_01'/>
+        
 
-    // If already existing profile, just update coordinates and simply welcome the user
-    if (sessionAttributes['nickname']) {
-      
-      speechText = WELCOME_MESSAGE;
+         <p>
+          Welcome ${sessionAttributes['nickname'] ? 'back' : ''} to Tribe ${sessionAttributes['nickname'] ? `<break strength="weak"/> <emphasis level="moderate">${sessionAttributes['nickname']}</emphasis>` : ''} !
+          
+          ${sessionAttributes['nickname'] ? '' : 'The skill that lets you communicate with your nearby  tribe in a funny and anonymous way.'}
+        </p>
 
-      return handlerInput.responseBuilder
-        .speak(speechText)
-        .getResponse();
+        <p>
+          ${sessionAttributes['nickname'] ? '' : repromptText}
+        </p>
 
-    // If no profile, ask to setup the profile here
-    } else {
+        
+      </speak>`;
 
-      const repromptText = `I see that you did not create your avatar yet. To do that, say: create my avatar`;
-      speechText = `${WELCOME_MESSAGE} ... ${repromptText}`;
+    const response = handlerInput.responseBuilder.getResponse();
+    response.outputSpeech = {
+      type: 'SSML',
+      ssml: speechText,
+    };
 
-      return handlerInput.responseBuilder
-        .speak(speechText)
-        .reprompt(repromptText)
-        .getResponse();
+    // if no profile, ask to create an avatar in the reprompt
+    if (!sessionAttributes['nickname']) {
+      response.reprompt = {
+        // @ts-ignore
+        type: 'PlainText',
+        text: repromptText
+      }
     }
+
+    return response;
   },
 };
+
+
+
+
+
+
+
 
 // Manual dialog
 // const slots = handlerInput.requestEnvelope.request.intent.slots;

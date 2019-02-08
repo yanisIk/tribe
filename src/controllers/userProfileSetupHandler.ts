@@ -1,8 +1,9 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response } from 'ask-sdk-model';
 import { getUserInfos, getUserCountryAndPostalCode } from "../utils/alexaUtils";
-import { createUserProfile } from "../services/userProfileService";
+import { createOrUpdateUserProfile } from "../services/userProfileService";
 import { IUserProfile } from "../models/UserProfile";
+import { POLLY_VOICES } from "../utils/POLLY_VOICES";
 
 export const UserProfileSetupHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {
@@ -19,10 +20,13 @@ export const UserProfileSetupHandler : RequestHandler = {
     const {userId, deviceId} = getUserInfos(handlerInput);
     const locationDetails = await getUserCountryAndPostalCode(handlerInput);
 
+    const availableVoices = POLLY_VOICES.filter(v => v.gender === voiceGender);
+    const assignedPollyVoice = availableVoices[Math.floor(Math.random() * availableVoices.length)].name;
+
     const userProfile: IUserProfile | any = {   userId: userId,
                                                 nickname: nickname,
                                                 voiceGender: voiceGender,
-                                                assignedPollyVoice: '',
+                                                assignedPollyVoice: assignedPollyVoice,
                                                 locationPoint: {
                                                     type: 'Point', 
                                                     coordinates: [locationDetails.lon, locationDetails.lat]
@@ -34,13 +38,36 @@ export const UserProfileSetupHandler : RequestHandler = {
                                                 }
                                             };
 
-    await createUserProfile(userProfile);
+    await createOrUpdateUserProfile(userProfile);
+    // clean up nickname in session attribtues so that the interceptor reloads the fresh one (if update)
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    sessionAttributes['nickname'] = null;
+    handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-    const speechText = `Alright ${nickname} ! You're ready to go, your ${userProfile.locationDetails.city} tribe awaits you !`
+    const speechText = 
+     `<speak>
+        <audio src='soundbank://soundlibrary/human/amzn_sfx_crowd_cheer_med_01'/>
+        
+        
+        <p>
+            Alright <emphasis level="moderate">${nickname}</emphasis> !
+            <voice name="${userProfile.assignedPollyVoice}">This is how your voice will sound like.</voice>.
+        </p>
 
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .withShouldEndSession(true)
-      .getResponse();
+        <p> If you want to broadcast a message to your tribe, just say: Broadcast to my tribe. </p>
+
+        <p>
+            You're now ready to go, your ${userProfile.locationDetails.city} Tribe awaits you !
+        </p>
+
+        
+      </speak>`;
+
+    const response = handlerInput.responseBuilder.getResponse();
+    response.outputSpeech = {
+        type: 'SSML',
+        ssml: speechText,
+    };
+    return response;
   },
 };

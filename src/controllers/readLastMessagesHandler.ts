@@ -26,11 +26,30 @@ export const ReadLastMessagesHandler : RequestHandler = {
     const DEFAULT_RADIUS_IN_METERS = 5000;
     const lastMessages: IMessage[] = await getMessagesAround(sessionAttributes['longitude'], sessionAttributes['latitude'], DEFAULT_RADIUS_IN_METERS, numberOfMessages);
 
-    const speechText = `Here are the last ${numberOfMessages || ''} messages sent by your ${sessionAttributes['city']} tribe's members: 
-                      ${lastMessages.map((m, i) => `${m.nickname} said: ${m.message} ... ${i === (lastMessages.length - 1) ? `This was the last one` : `Here's another one: `}`)}`;
+    const speechText = 
+    `<speak>
+      
+      
+      <p>
+          Here are the last ${numberOfMessages || ''} messages sent by your ${sessionAttributes['city']} tribe's members:
+      </p>
 
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .getResponse();
+      ${lastMessages.map((m, i) => `
+        <p>
+            ${m.nickname} said: <voice name="${m.assignedPollyVoice}"> ${m.message} </voice>
+            <break time="1s"> 
+            ${i === (lastMessages.length - 1) ? `This was the last one` : `Here's another one: `}
+        </p>
+      `)}
+
+      
+    </speak>`;
+
+    const response = handlerInput.responseBuilder.getResponse();
+    response.outputSpeech = {
+        type: 'SSML',
+        ssml: speechText,
+    };
+    return response;
   },
 };

@@ -17,11 +17,25 @@ export const GetUserProfile : RequestHandler = {
         .getResponse();
     }
 
-    const speechText = `Your nickname is ${sessionAttributes['nickname']} and you chose to have a ${sessionAttributes['voiceGender']} voice.
-                        Your tribe is located in ${sessionAttributes['city']}`;
-    
-    return handlerInput.responseBuilder
-      .speak(speechText)
-      .getResponse();
+    const speechText = 
+    `<speak>
+        
+        
+        <p>
+            Your nickname is <emphasis level="moderate">${sessionAttributes['nickname']}</emphasis> and <voice name="${sessionAttributes['assignedPollyVoice']}">this is how your voice will sound like</voice>.
+            Your tribe is located in ${sessionAttributes['city']}
+        </p>
+
+        <p> If you want to edit your profile, say: Change my avatar </p>
+
+        
+    </speak>`;
+
+    const response = handlerInput.responseBuilder.getResponse();
+    response.outputSpeech = {
+        type: 'SSML',
+        ssml: speechText,
+    };
+    return response;
 }
 };

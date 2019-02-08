@@ -1,10 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
-import { getMessagesAround, getMessagesByCity, insertMessage } from "../services/messageService";
-import { getUserProfile, getUserProfilesAround, getUserProfilesByCity } from "../services/userProfileService";
-import { getUserInfos, isGeolocationSupported, askForGeoPermissionResponse, getUserCountryAndPostalCode } from "../utils/alexaUtils";
+import { insertMessage } from "../services/messageService";
 import { IMessage } from "../models/Message";
-import { IUserProfile } from "../models/UserProfile";
 
 export const BroadcastMessageHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {
@@ -42,7 +39,12 @@ export const BroadcastMessageHandler : RequestHandler = {
                                     };
     await insertMessage(message);
 
-    const speechText = `Your message has been broadcasted to your tribe !`;
+    const speechText = `
+    <speak>
+        <audio src='soundbank://soundlibrary/human/amzn_sfx_crowd_cheer_med_01'/>
+        Your message has been broadcasted to your tribe !
+      </speak>
+      `;
 
     return handlerInput.responseBuilder
       .speak(speechText)

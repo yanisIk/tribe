@@ -29,7 +29,7 @@ export async function getUserProfilesByCity(city: string, limit = 10): Promise<I
     }).limit(limit).lean().exec();
 }
 
-export async function createUserProfile(userProfile: IUserProfile): Promise<IUserProfile> {
+export async function createOrUpdateUserProfile(userProfile: IUserProfile): Promise<IUserProfile> {
     await checkAndConnectMongoose();
     if (await getUserProfile(userProfile.userId)) {
         return await updateUserProfile(userProfile.userId, userProfile);
