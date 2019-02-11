@@ -1,6 +1,5 @@
 import { HandlerInput } from "ask-sdk";
 import { interfaces, Response } from "ask-sdk-model";
-
 import * as request from "request-promise";
 
 export const isGeolocationSupported = (handlerInput: HandlerInput): boolean => {

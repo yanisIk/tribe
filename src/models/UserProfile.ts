@@ -23,6 +23,7 @@ export interface IUserProfile extends Document {
       ]];
     };
   };
+  tribeRadiusInKm?: number;
 }
 
 // Define the User Profile schema.
@@ -38,6 +39,7 @@ const UserProfileSchema = new Schema({
     country: { type: String, index: true },
     cityPolygon: { type: polygonSchema }
   },
+  tribeRadiusInKm: {type: Number, default: 5}
 }, {
   timestamps: true
 });

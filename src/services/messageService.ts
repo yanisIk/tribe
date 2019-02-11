@@ -1,7 +1,7 @@
 import { Message, IMessage } from "../models/Message";
 import { checkAndConnectMongoose } from "../utils/mongooseUtils";
 
-export async function getMessagesAround(long: number, lat: number, radiusInMeters: number, limit = 5): Promise<IMessage[]> {
+export async function getMessagesAround(long: number, lat: number, radiusInMeters: number = 5000, limit = 5): Promise<IMessage[]> {
     await checkAndConnectMongoose();
     return await Message.find({
         locationPoint: {

@@ -23,6 +23,7 @@ export const UserProfileInterceptor = {
         sessionAttributes['latitude'] = userProfile.locationPoint.coordinates[1];
         sessionAttributes['city'] = userProfile.locationDetails.city;
         sessionAttributes['country'] = userProfile.locationDetails.country;
+        sessionAttributes['tribeRadiusInKm'] = userProfile.tribeRadiusInKm || 5;
 
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
