@@ -40,12 +40,12 @@ export async function updateUserProfile(userId: string, userProfile: IUserProfil
     return await UserProfile.updateOne({userId: userId}, userProfile).lean().exec();
 }  
 
-export async function getLocationDetailsByCityAndCountryName(cityName: string, countryName: string): Promise<{country: string, lat: number, lon: number, city: string}> {
+export async function getLocationDetailsByCityAndCountryName(cityName: string, countryName: string): Promise<{countryCode: string, lat: number, lon: number, city: string}> {
 
     const locationDetails = await request.get({
-        url: `https://us1.locationiq.com/v1/search.php?key=712e088a5520d8&city=${cityName}&country=${countryName}&addressdetails=1&format=json`,
+        url: encodeURIComponent(`https://us1.locationiq.com/v1/search.php?key=712e088a5520d8&q=${cityName} ${countryName}&addressdetails=1&format=json`),
         json: true
     });
 
-    return {country: countryName, lat: locationDetails[0].lat, lon: locationDetails[0].lon, city: locationDetails[0].address.county};
+    return {countryCode: locationDetails[0].address.country_code, lat: locationDetails[0].lat, lon: locationDetails[0].lon, city: locationDetails[0].address.city || locationDetails[0].address.county};
 }

@@ -73,5 +73,5 @@ export async function getUserCountryAndPostalCode(handlerInput: HandlerInput): P
         json: true
     });
 
-    return {countryCode, postalCode, lat: locationDetails[0].lat, lon: locationDetails[0].lon, city: locationDetails[0].address.county};
+    return {countryCode, postalCode, lat: locationDetails[0].lat, lon: locationDetails[0].lon, city: locationDetails[0].address.city || locationDetails[0].address.county};
 }

@@ -26,6 +26,7 @@ export const ReadLastMessagesHandler : RequestHandler = {
     const lastMessages: IMessage[] = await getMessagesAround(sessionAttributes['longitude'], sessionAttributes['latitude'], sessionAttributes['tribeRadiusInKm']*1000, numberOfMessages);
 
     const speechText = 
+    lastMessages && lastMessages.length ?
     `<speak>
       
       
@@ -34,7 +35,7 @@ export const ReadLastMessagesHandler : RequestHandler = {
       </p>
 
 
-      ${lastMessages.map((m, i) => {
+      ${lastMessages.map((m, i) =>
         `
           <p> 
             ${m.nickname} said: <voice name="${m.assignedPollyVoice}"> ${m.message} </voice>
@@ -44,8 +45,13 @@ export const ReadLastMessagesHandler : RequestHandler = {
             ${i === (lastMessages.length - 1) ? `This was the last one` : `Here's another one: `}
           </p>
         `
-      })}
+      )}
  
+    </speak>` :
+    `<speak>
+      <p>
+        There are  no messages from your tribe right now.
+      </p>
     </speak>`;
 
     const response = handlerInput.responseBuilder.getResponse();

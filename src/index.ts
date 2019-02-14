@@ -7,6 +7,7 @@ import { LaunchRequestHandler } from "./controllers/welcomeHandler";
 import { BroadcastMessageHandler } from "./controllers/broadcastMessageHandler";
 import { ReadLastMessagesHandler } from "./controllers/readLastMessagesHandler";
 import { UserProfileSetupHandler } from "./controllers/userProfileSetupHandler";
+import { ChangeLocationHandler, ResetLocationHandler } from "./controllers/changeLocationHandler";
 import { GetUserProfile } from "./controllers/getMyUserProfileInfosHandler";
 
 
@@ -36,6 +37,8 @@ exports.handler = async (event, context) => {
         // AskForCountryPostalCodePermission,
         LaunchRequestHandler,
         UserProfileSetupHandler,
+        ChangeLocationHandler,
+        ResetLocationHandler,
         GetUserProfile,
         BroadcastMessageHandler,
         ReadLastMessagesHandler,
