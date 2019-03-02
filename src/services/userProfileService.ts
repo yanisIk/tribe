@@ -43,7 +43,7 @@ export async function updateUserProfile(userId: string, userProfile: IUserProfil
 export async function getLocationDetailsByCityAndCountryName(cityName: string, countryName: string): Promise<{countryCode: string, lat: number, lon: number, city: string}> {
 
     const locationDetails = await request.get({
-        url: encodeURIComponent(`https://us1.locationiq.com/v1/search.php?key=712e088a5520d8&q=${cityName} ${countryName}&addressdetails=1&format=json`),
+        url: encodeURI(`https://us1.locationiq.com/v1/search.php?key=712e088a5520d8&q=${cityName} ${countryName}&addressdetails=1&format=json`),
         json: true
     });
 

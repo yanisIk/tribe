@@ -14,14 +14,14 @@ export async function getMessagesAround(long: number, lat: number, radiusInMeter
                 // $minDistance: 1
               }
         }
-    }).limit(limit).lean().exec();
+    }).sort({createdAt: 'desc'}).limit(limit).lean().exec();
 }
 
 export async function getMessagesByCity(city: string, limit = 10): Promise<IMessage[]> {
     await checkAndConnectMongoose();
     return await Message.find({
         "locationDetails.city": city
-    }).limit(limit).lean().exec();
+    }).sort({createdAt: 'desc'}).limit(limit).lean().exec();
 }
 
 export async function insertMessage(message: IMessage): Promise<IMessage> {

@@ -10,6 +10,11 @@ import { UserProfileSetupHandler } from "./controllers/userProfileSetupHandler";
 import { ChangeLocationHandler, ResetLocationHandler } from "./controllers/changeLocationHandler";
 import { GetUserProfile } from "./controllers/getMyUserProfileInfosHandler";
 
+import { AskQuestionHandler } from './controllers/askQuestionHandler';
+import { AnswerQuestionHandler, YesNoAnswerQuestionHandler } from './controllers/answerQuestionHandler';
+import { GetQuestionsHandler, GetAnotherQuestion } from './controllers/getQuestionsHandler';
+import { GetAnswersHandler, GetAnotherAnswer } from './controllers/getAnswersHandler';
+
 
 // Import interceptors
 import { UserProfileInterceptor } from "./controllers/interceptors/userProfileLoader";
@@ -42,6 +47,13 @@ exports.handler = async (event, context) => {
         GetUserProfile,
         BroadcastMessageHandler,
         ReadLastMessagesHandler,
+        AskQuestionHandler,
+        AnswerQuestionHandler,
+        YesNoAnswerQuestionHandler,
+        GetQuestionsHandler,
+        GetAnotherQuestion,
+        GetAnswersHandler,
+        GetAnotherAnswer,
         HelpHandler,
         ExitHandler,
         FallbackHandler,
