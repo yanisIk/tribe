@@ -1,6 +1,4 @@
 node_modules
 dist
+lambda.zip
 .env
-localdb
-
-!.env.example

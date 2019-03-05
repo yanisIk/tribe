@@ -25,9 +25,9 @@ export const YesNoAnswerQuestionHandler : RequestHandler = {
         const repromptText = `Ok what is your answer`;
 
         return handlerInput.responseBuilder
-                .addElicitSlotDirective('answer', {name: 'AnswerQuestion', confirmationStatus: 'NONE', slots: {}})
                 .speak(`You're so nice ! ${repromptText}`)
                 .reprompt(repromptText)
+                .addElicitSlotDirective('answer', {name: 'AnswerQuestion', confirmationStatus: 'NONE', slots: {}})
                 .getResponse();
       // @ts-ignore
       } else if (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NoIntent') {
@@ -49,53 +49,51 @@ export const YesNoAnswerQuestionHandler : RequestHandler = {
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
         return response;
-
-        
       }
     },
 };
 
 
 export const AnswerQuestionHandler : RequestHandler = {
-canHandle(handlerInput : HandlerInput) : boolean {
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'AnswerQuestion'
-            && sessionAttributes['previousIntent'] === 'YesAnswerQuestion';
-},
-async handle(handlerInput : HandlerInput) : Promise<Response> {
+    canHandle(handlerInput : HandlerInput) : boolean {
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+                && handlerInput.requestEnvelope.request.intent.name === 'AnswerQuestion'
+                && sessionAttributes['previousIntent'] === 'YesAnswerQuestion';
+    },
+    async handle(handlerInput : HandlerInput) : Promise<Response> {
 
-    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-    const lastQuestionId: String = sessionAttributes['lastQuestionId'];
-    // @ts-ignore request.intent issue
-    const slots = handlerInput.requestEnvelope.request.intent.slots;
-    const answerString = slots['answer'] && slots['answer'].value ? slots['answer'].value.toLowerCase() : undefined;
+        const lastQuestionId: String = sessionAttributes['lastQuestionId'];
+        // @ts-ignore request.intent issue
+        const slots = handlerInput.requestEnvelope.request.intent.slots;
+        const answerString = slots['answer'] && slots['answer'].value ? slots['answer'].value.toLowerCase() : undefined;
 
-    const answer: IAnswer | any = { 
-        questionId: lastQuestionId,
-        answer: answerString, 
-        userId: sessionAttributes['userId'], 
-        nickname: sessionAttributes['nickname'], 
-        assignedPollyVoice: sessionAttributes['assignedPollyVoice'], 
-        locationPoint: {
-          type: 'Point', 
-          coordinates: [sessionAttributes['longitude'], sessionAttributes['latitude']]
-      },
-      locationDetails: {
-          city: sessionAttributes['city'],
-          country: sessionAttributes['countryCode'],
-          cityPolygon: null
-      }                           
-      };
+        const answer: IAnswer | any = { 
+            questionId: lastQuestionId,
+            answer: answerString, 
+            userId: sessionAttributes['userId'], 
+            nickname: sessionAttributes['nickname'], 
+            assignedPollyVoice: sessionAttributes['assignedPollyVoice'], 
+            locationPoint: {
+            type: 'Point', 
+            coordinates: [sessionAttributes['longitude'], sessionAttributes['latitude']]
+        },
+        locationDetails: {
+            city: sessionAttributes['city'],
+            country: sessionAttributes['countryCode'],
+            cityPolygon: null
+        }                           
+        };
 
-    await insertAnswer(answer);
+        await insertAnswer(answer);
 
-    sessionAttributes['previousIntent'] = 'AnswerQuestion';
-    handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+        sessionAttributes['previousIntent'] = 'AnswerQuestion';
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-    return handlerInput.responseBuilder
-            .speak(`Thanks for helping your tribe ${sessionAttributes['nickname']}`)
-            .getResponse();
-},
+        return handlerInput.responseBuilder
+                .speak(`Thanks for helping your tribe ${sessionAttributes['nickname']}`)
+                .getResponse();
+    },
 };

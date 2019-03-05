@@ -4,7 +4,7 @@
   "description": "Alexa voice chat skill",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && rm -rf lambda.zip && zip -r lambda.zip ./",
     "start": "npm run build && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
