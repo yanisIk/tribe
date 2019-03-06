@@ -42,7 +42,8 @@ export const GetQuestionsHandler : RequestHandler = {
     const currentQuestion = lastQuestions.pop();
     const isLast = !lastQuestions.length; 
 
-    const introMessage = sessionAttributes['lastQuestions'] ? '' : `There are ${lastQuestions.length + 1} questions around you`;
+    const introMessage = sessionAttributes['lastQuestions'] ? '' : 
+                        `There ${lastQuestions.length + 1 > 1 ? 'are' : 'is'} ${lastQuestions.length + 1} question${lastQuestions.length + 1 > 1 ? 's' : ''} around you`;
     const repromptMessage = `Answer or skip ?`;
     const speechText = buildQuestionSpeechText(currentQuestion, isLast, introMessage, repromptMessage);
 

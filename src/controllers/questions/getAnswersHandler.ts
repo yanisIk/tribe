@@ -33,7 +33,8 @@ export const GetAnswersHandler : RequestHandler = {
     const currentAnswer = lastAnswers.pop();
     const isLast = !lastAnswers.length;
 
-    const introMessage = sessionAttributes['lastAnswers'] ? '' : `You have ${lastAnswers.length + 1} answers for your last question`;
+    const introMessage = sessionAttributes['lastAnswers'] ? '' : 
+                        `You have ${lastAnswers.length + 1} answer${lastAnswers.length + 1 > 1 ? 's' : ''} for your last question`;
     const repromptMessage = 'Another one ?';
     const speechText = buildAnswerSpeechText(currentAnswer, isLast, introMessage, repromptMessage);
 
