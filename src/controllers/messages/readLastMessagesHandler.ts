@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
-import { getMessagesAround, getMessagesByCity } from "../services/messageService";
-import { IMessage } from "../models/Message";
+import { getMessagesAround, getMessagesByCity } from "../../services/messageService";
+import { IMessage } from "../../models/Message";
 
 export const ReadLastMessagesHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {

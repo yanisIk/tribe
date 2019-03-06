@@ -1,9 +1,9 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response } from 'ask-sdk-model';
-import { getUserInfos, getUserCountryAndPostalCode } from "../utils/alexaUtils";
-import { upsertUserProfile } from "../services/userProfileService";
-import { IUserProfile } from "../models/UserProfile";
-import { POLLY_VOICES } from "../utils/POLLY_VOICES";
+import { getUserInfos, getUserCountryAndPostalCode } from "../../utils/alexaUtils";
+import { upsertUserProfile } from "../../services/userProfileService";
+import { IUserProfile } from "../../models/UserProfile";
+import { POLLY_VOICES } from "../../utils/POLLY_VOICES";
 
 export const UserProfileSetupHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {

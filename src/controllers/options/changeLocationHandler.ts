@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response } from 'ask-sdk-model';
-import { getUserInfos, getUserCountryAndPostalCode } from "../utils/alexaUtils";
-import { getLocationDetailsByCityAndCountryName, updateUserProfile, getUserProfile } from "../services/userProfileService";
+import { getUserInfos, getUserCountryAndPostalCode } from "../../utils/alexaUtils";
+import { getLocationDetailsByCityAndCountryName, updateUserProfile, getUserProfile } from "../../services/userProfileService";
 
 export const ChangeLocationHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {

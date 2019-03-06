@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
-import { insertQuestion } from "../services/questionService";
-import { IQuestion } from "../models/Question";
+import { insertQuestion } from "../../services/questionService";
+import { IQuestion } from "../../models/Question";
 
 export const AskQuestionHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {

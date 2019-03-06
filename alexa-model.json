@@ -1,0 +1,556 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "tribe",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "BroadcastMessage",
+                    "slots": [
+                        {
+                            "name": "message",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "broadcast to my tribe",
+                        "make an announce",
+                        "announce",
+                        "broadcast",
+                        "tell everyone {message}",
+                        "broadcast the following message. {message}",
+                        "tell to my tribe. {message}",
+                        "send a message"
+                    ]
+                },
+                {
+                    "name": "SetupProfile",
+                    "slots": [
+                        {
+                            "name": "nickname",
+                            "type": "AMAZON.Person",
+                            "samples": [
+                                "{nickname}",
+                                "Call me {nickname}",
+                                "My nickname is {nickname}"
+                            ]
+                        },
+                        {
+                            "name": "voiceGender",
+                            "type": "AMAZON.Genre",
+                            "samples": [
+                                "{voiceGender}",
+                                "I would prefer a {voiceGender} voice",
+                                "I would like a {voiceGender} voice",
+                                "{voiceGender} voice"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "Change my profile",
+                        "Change my avatar",
+                        "Edit my avatar",
+                        "Edit my profile",
+                        "Set my voice to {voiceGender}",
+                        "My voice gender is {voiceGender}",
+                        "Call me {nickname}",
+                        "My nickname is {nickname}",
+                        "Create my avatar",
+                        "Setup my avatar",
+                        "Create my profile",
+                        "Setup my profile"
+                    ]
+                },
+                {
+                    "name": "ReadLastMessages",
+                    "slots": [
+                        {
+                            "name": "numberOfMessages",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "What's going on around",
+                        "Read the previous message",
+                        "Read the last message",
+                        "Read the {numberOfMessages} previous messages",
+                        "Read the {numberOfMessages} last messages"
+                    ]
+                },
+                {
+                    "name": "GetUserProfile",
+                    "slots": [],
+                    "samples": [
+                        "Describe my profile",
+                        "Describe my avatar",
+                        "Say my nickname",
+                        "Say my name",
+                        "What is my user profile",
+                        "What is my profile",
+                        "Do I have a profile",
+                        "Do I have a user profile",
+                        "Do I have an avatar",
+                        "What is my avatar",
+                        "What is my nickname"
+                    ]
+                },
+                {
+                    "name": "ChangeLocation",
+                    "slots": [
+                        {
+                            "name": "cityName",
+                            "type": "AMAZON.US_CITY",
+                            "samples": [
+                                "{cityName} please",
+                                "Let's try {cityName}",
+                                "I would like to go to {cityName}",
+                                "{cityName}"
+                            ]
+                        },
+                        {
+                            "name": "countryName",
+                            "type": "AMAZON.Country",
+                            "samples": [
+                                "it's located in {countryName}",
+                                "in {countryName}",
+                                "{countryName}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "Teleport me",
+                        "Change tribe",
+                        "Change place",
+                        "Change city",
+                        "Change address",
+                        "Change location",
+                        "Change my location"
+                    ]
+                },
+                {
+                    "name": "ResetLocation",
+                    "slots": [],
+                    "samples": [
+                        "Set my original location",
+                        "Set my location to home",
+                        "Change my location to home",
+                        "Go back to home",
+                        "Teleport back to home",
+                        "Go back to my tribe",
+                        "Go back to my original tribe",
+                        "Go back to my native tribe",
+                        "Set my current location",
+                        "Go back to my original location",
+                        "Reset my location"
+                    ]
+                },
+                {
+                    "name": "AskQuestion",
+                    "slots": [
+                        {
+                            "name": "question",
+                            "type": "AMAZON.SearchQuery",
+                            "samples": [
+                                "My question is  {question}",
+                                "{question}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "ask question",
+                        "post question",
+                        "question",
+                        "Can you ask a question for me",
+                        "Can I ask a question",
+                        "I have a question"
+                    ]
+                },
+                {
+                    "name": "GetAnswers",
+                    "slots": [],
+                    "samples": [
+                        "Give me answers",
+                        "Get answer",
+                        "Get answers",
+                        "Do I have answers ",
+                        "Did anybody answer my question",
+                        "I need answers",
+                        "Do I have answers to my question"
+                    ]
+                },
+                {
+                    "name": "GetQuestions",
+                    "slots": [
+                        {
+                            "name": "randomWordA",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "Any question {randomWordA}",
+                        "Get question",
+                        "Can I help someone",
+                        "Get the latest questions",
+                        "What are the questions around me",
+                        "Get questions"
+                    ]
+                },
+                {
+                    "name": "AMAZON.YesIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NoIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AnswerLastQuestion",
+                    "slots": [
+                        {
+                            "name": "answerMessage",
+                            "type": "AMAZON.SearchQuery",
+                            "samples": [
+                                "{answerMessage}"
+                            ]
+                        }
+                    ],
+                    "samples": [
+                        "Answer last question",
+                        "Answer",
+                        "Let's answer the last question",
+                        "Answer the last question"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NextIntent",
+                    "samples": []
+                },
+                {
+                    "name": "Skip",
+                    "slots": [
+                        {
+                            "name": "randomWordA",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "Skip {randomWordA}",
+                        "Skip"
+                    ]
+                },
+                {
+                    "name": "AMAZON.PreviousIntent",
+                    "samples": []
+                }
+            ],
+            "types": []
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "BroadcastMessage",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "message",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.932218565669.693183253725"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "SetupProfile",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "nickname",
+                            "type": "AMAZON.Person",
+                            "confirmationRequired": true,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "confirmation": "Confirm.Slot.28219804949.1189546281030",
+                                "elicitation": "Elicit.Slot.28219804949.1189546281030"
+                            }
+                        },
+                        {
+                            "name": "voiceGender",
+                            "type": "AMAZON.Genre",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.28219804949.357643623130"
+                            },
+                            "validations": [
+                                {
+                                    "type": "isInSet",
+                                    "prompt": "Slot.Validation.28219804949.357643623130.652440705614",
+                                    "values": [
+                                        "woman",
+                                        "man",
+                                        "female",
+                                        "male"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "ChangeLocation",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "cityName",
+                            "type": "AMAZON.US_CITY",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1240236775304.854074486182"
+                            }
+                        },
+                        {
+                            "name": "countryName",
+                            "type": "AMAZON.Country",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1240236775304.278491648755"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "AskQuestion",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "question",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": true,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "confirmation": "Confirm.Slot.721320272173.981672791640",
+                                "elicitation": "Elicit.Slot.762856171229.775538692592"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "AnswerLastQuestion",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "answerMessage",
+                            "type": "AMAZON.SearchQuery",
+                            "confirmationRequired": true,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "confirmation": "Confirm.Slot.249574396755.548470347155",
+                                "elicitation": "Elicit.Slot.249574396755.548470347155"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "delegationStrategy": "ALWAYS"
+        },
+        "prompts": [
+            {
+                "id": "Confirm.Slot.28219804949.1189546281030",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Your nickname is {nickname} . Is that correct ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.28219804949.1189546281030",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What funny name would you like to have ?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What nickname would you like to have ?"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.28219804949.357643623130.652440705614",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "You can only choose between a man or woman voice"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.28219804949.357643623130",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Do you prefer a man or woman voice ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.932218565669.693183253725",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Ok, say your message"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Ok, what is your message ?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What's your message ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1240236775304.854074486182",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What city would you like to go to ?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "In which city would you like to go ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1240236775304.278491648755",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Which country is {cityName} located ?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "And in which country is {cityName} located ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.762856171229.775538692592",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's your question ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.901927219004.674629742468",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your answer ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1464358058415.1029225494055",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Say your answer"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "What is your answer ?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Slot.1464358058415.1029225494055",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Let's review your answer. {answer} . Is that correct ?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Slot.721320272173.981672791640",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Your question is. {question} . Is that correct ?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Slot.1156447882071.423385315723",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Let's check, your answer is. {answer} . is that correct ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1191708817663.1550329426121",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's your answer?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Slot.249574396755.548470347155",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Your answer is. {answerMessage} . is that correct ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.249574396755.548470347155",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your answer ?"
+                    }
+                ]
+            }
+        ]
+    }
+}

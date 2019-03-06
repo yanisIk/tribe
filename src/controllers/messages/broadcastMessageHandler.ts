@@ -1,7 +1,7 @@
 import { RequestHandler, HandlerInput } from "ask-sdk";
 import { Response, services } from 'ask-sdk-model';
-import { insertMessage } from "../services/messageService";
-import { IMessage } from "../models/Message";
+import { insertMessage } from "../../services/messageService";
+import { IMessage } from "../../models/Message";
 
 export const BroadcastMessageHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {

@@ -75,3 +75,13 @@ export async function getUserCountryAndPostalCode(handlerInput: HandlerInput): P
 
     return {countryCode, postalCode, lat: locationDetails[0].lat, lon: locationDetails[0].lon, city: locationDetails[0].address.city || locationDetails[0].address.county};
 }
+
+export function isIntentAndState(handlerInput: HandlerInput, intent: string, state?: string) {
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    if (handlerInput.requestEnvelope.request.type === 'IntentRequest' && handlerInput.requestEnvelope.request.intent.name === intent) {
+        if (!state) return true;
+        if (sessionAttributes['state'] === state) return true;
+        else return false;
+    }
+    return false;
+}

@@ -4,16 +4,16 @@ import { SkillBuilders } from "ask-sdk-core";
 import { AskGeoPermissionHandler } from "./controllers/genericHandlers/askGeoPermissionHandler";
 import { AskForCountryPostalCodePermission } from "./controllers/genericHandlers/askCountryPostalcodePermissionHandler";
 import { LaunchRequestHandler } from "./controllers/welcomeHandler";
-import { BroadcastMessageHandler } from "./controllers/broadcastMessageHandler";
-import { ReadLastMessagesHandler } from "./controllers/readLastMessagesHandler";
-import { UserProfileSetupHandler } from "./controllers/userProfileSetupHandler";
-import { ChangeLocationHandler, ResetLocationHandler } from "./controllers/changeLocationHandler";
-import { GetUserProfile } from "./controllers/getMyUserProfileInfosHandler";
+import { BroadcastMessageHandler } from "./controllers/messages/broadcastMessageHandler";
+import { ReadLastMessagesHandler } from "./controllers/messages/readLastMessagesHandler";
+import { UserProfileSetupHandler } from "./controllers/options/userProfileSetupHandler";
+import { ChangeLocationHandler, ResetLocationHandler } from "./controllers/options/changeLocationHandler";
+import { GetUserProfile } from "./controllers/options/getMyUserProfileInfosHandler";
 
-import { AskQuestionHandler } from './controllers/askQuestionHandler';
-import { AnswerQuestionHandler, YesNoAnswerQuestionHandler } from './controllers/answerQuestionHandler';
-import { GetQuestionsHandler, GetAnotherQuestion } from './controllers/getQuestionsHandler';
-import { GetAnswersHandler, GetAnotherAnswer } from './controllers/getAnswersHandler';
+import { AskQuestionHandler } from './controllers/questions/askQuestionHandler';
+import { AnswerQuestionHandler, YesNoAnswerQuestionHandler } from './controllers/questions/answerQuestionHandler';
+import { GetQuestionsHandler } from './controllers/questions/getQuestionsHandler';
+import { GetAnswersHandler } from './controllers/questions/getAnswersHandler';
 
 
 // Import interceptors
@@ -51,9 +51,7 @@ exports.handler = async (event, context) => {
         AnswerQuestionHandler,
         YesNoAnswerQuestionHandler,
         GetQuestionsHandler,
-        GetAnotherQuestion,
         GetAnswersHandler,
-        GetAnotherAnswer,
         HelpHandler,
         ExitHandler,
         FallbackHandler,
