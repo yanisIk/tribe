@@ -56,7 +56,7 @@
                         },
                         {
                             "name": "voiceGender",
-                            "type": "AMAZON.Genre",
+                            "type": "AMAZON.SearchQuery",
                             "samples": [
                                 "{voiceGender}",
                                 "I would prefer a {voiceGender} voice",
@@ -299,7 +299,7 @@
                         },
                         {
                             "name": "voiceGender",
-                            "type": "AMAZON.Genre",
+                            "type": "AMAZON.SearchQuery",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
@@ -308,12 +308,14 @@
                             "validations": [
                                 {
                                     "type": "isInSet",
-                                    "prompt": "Slot.Validation.28219804949.357643623130.652440705614",
+                                    "prompt": "Slot.Validation.1140155021766.1447443081002.1120960534287",
                                     "values": [
                                         "woman",
+                                        "woman's",
+                                        "guy",
                                         "man",
-                                        "female",
-                                        "male"
+                                        "man's",
+                                        "girl"
                                     ]
                                 }
                             ]
@@ -402,15 +404,6 @@
                     {
                         "type": "PlainText",
                         "value": "What nickname would you like to have ?"
-                    }
-                ]
-            },
-            {
-                "id": "Slot.Validation.28219804949.357643623130.652440705614",
-                "variations": [
-                    {
-                        "type": "PlainText",
-                        "value": "You can only choose between a man or woman voice"
                     }
                 ]
             },
@@ -548,6 +541,15 @@
                     {
                         "type": "PlainText",
                         "value": "What is your answer ?"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.1140155021766.1447443081002.1120960534287",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Hmm, you can only chose between man or woman voice, what's your choice ?"
                     }
                 ]
             }

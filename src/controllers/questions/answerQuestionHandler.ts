@@ -65,16 +65,19 @@ export const AnswerQuestionHandler : RequestHandler = {
         await insertAnswer(answer);
 
         sessionAttributes['previousIntent'] = 'AnswerQuestion';
+        sessionAttributes['state'] = STATES.QUESTIONS.GET_ANSWERS_YES_NO;
         handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
+        const repromptMessage = `I think you got a new answer for your previous question, wanna check ?`
         return handlerInput.responseBuilder
-                .speak(`Thanks for helping your tribe ${sessionAttributes['nickname']}`)
+                .speak(`Thanks for helping your tribe ${sessionAttributes['nickname']}. ${repromptMessage}`)
+                .reprompt(repromptMessage)
                 .getResponse();
     },
 };
 
 
-export const YesNoAnswerQuestionHandler : RequestHandler = {
+export const NoAnswerQuestionHandler : RequestHandler = {
     canHandle(handlerInput : HandlerInput) : boolean {
       if (isIntentAndState(handlerInput, 'AMAZON.NoIntent', STATES.QUESTIONS.ANSWER_YES_NO)) {
           return true;
@@ -98,7 +101,7 @@ export const YesNoAnswerQuestionHandler : RequestHandler = {
             sessionAttributes['state'] = STATES.QUESTIONS.NEXT_QUESTION_YES_NO;
             response = handlerInput.responseBuilder
                 .speak(`Oh ok, we won't answer this question. Do you want to hear another one ?`)
-                .reprompt(`Do you want to hear another question ?`)
+                .reprompt(`Do you want to hear another one ?`)
                 .withShouldEndSession(false)
                 .getResponse();
         }

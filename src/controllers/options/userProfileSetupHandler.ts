@@ -4,6 +4,7 @@ import { getUserInfos, getUserCountryAndPostalCode } from "../../utils/alexaUtil
 import { upsertUserProfile } from "../../services/userProfileService";
 import { IUserProfile } from "../../models/UserProfile";
 import { POLLY_VOICES } from "../../utils/POLLY_VOICES";
+import STATES from "../STATES";
 
 export const UserProfileSetupHandler : RequestHandler = {
   canHandle(handlerInput : HandlerInput) : boolean {
@@ -42,28 +43,32 @@ export const UserProfileSetupHandler : RequestHandler = {
     // clean up nickname in session attribtues so that the interceptor reloads the fresh one (if update)
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
     sessionAttributes['nickname'] = null;
+    sessionAttributes['state'] = STATES.QUESTIONS.ASK_QUESTION_YES_NO;
     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+
+    const repromptMessage = `Do you maybe want to ask a question to your tribe now ?`;
 
     const speechText = 
      `<speak>
         <audio src='soundbank://soundlibrary/human/amzn_sfx_crowd_cheer_med_01'/>
         
-        
         <p>
             Alright <emphasis level="moderate">${nickname}</emphasis> !
+            Welcome to the ${userProfile.locationDetails.city} tribe !
+        </p>
+
+        <p>
             <voice name="${userProfile.assignedPollyVoice}">This is how your voice will sound like.</voice>.
         </p>
 
-        <p> If you want to broadcast a message to your tribe, just say: Broadcast to my tribe. </p>
-
-        <p>
-            You're now ready to go, your ${userProfile.locationDetails.city} Tribe awaits you !
-        </p>
-
+        <p> ${repromptMessage} </p>
         
       </speak>`;
 
-    const response = handlerInput.responseBuilder.getResponse();
+    const response = handlerInput.responseBuilder
+                        .reprompt(repromptMessage)
+                        .withShouldEndSession(false)
+                        .getResponse();
     response.outputSpeech = {
         type: 'SSML',
         ssml: speechText,

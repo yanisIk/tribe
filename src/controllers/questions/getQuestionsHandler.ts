@@ -15,6 +15,8 @@ export const GetQuestionsHandler : RequestHandler = {
       return true;
     } else if (isIntentAndState(handlerInput, 'AMAZON.YesIntent', STATES.QUESTIONS.NEXT_QUESTION_YES_NO)) {
       return true;
+    } else if (isIntentAndState(handlerInput, 'AMAZON.YesIntent', STATES.QUESTIONS.GET_QUESTIONS_YES_NO)) {
+      return true;
     // Hybrid mode (using next + using yes dialog)
     } else if (isIntentAndState(handlerInput, 'AMAZON.NextIntent', STATES.QUESTIONS.ANSWER_YES_NO)) {
         return true;
@@ -44,7 +46,7 @@ export const GetQuestionsHandler : RequestHandler = {
 
     const introMessage = sessionAttributes['lastQuestions'] ? '' : 
                         `There ${lastQuestions.length + 1 > 1 ? 'are' : 'is'} ${lastQuestions.length + 1} question${lastQuestions.length + 1 > 1 ? 's' : ''} around you`;
-    const REPROMPT_MESSAGES = ['Answer or skip ?', 'Do you want to answer it ?'];
+    const REPROMPT_MESSAGES = [/*'Answer or skip ?', */'Do you want to answer it ?'];
     const repromptMessage = REPROMPT_MESSAGES[Math.floor(Math.random() * REPROMPT_MESSAGES.length)];
     const speechText = buildQuestionSpeechText(currentQuestion, isLast, introMessage, repromptMessage);
 
@@ -56,7 +58,7 @@ export const GetQuestionsHandler : RequestHandler = {
 
     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
 
-    const response = handlerInput.responseBuilder.reprompt(repromptMessage).getResponse();
+    const response = handlerInput.responseBuilder.reprompt(repromptMessage).withShouldEndSession(false).getResponse();
     response.outputSpeech = {
         type: 'SSML',
         ssml: speechText,
@@ -86,3 +88,23 @@ function buildQuestionSpeechText(question: IQuestion, isLast: boolean, introMess
       </p>
     </speak>`;
 }
+
+export const NoGetQuestionsHandler : RequestHandler = {
+  canHandle(handlerInput : HandlerInput) : boolean {
+    if (isIntentAndState(handlerInput, 'AMAZON.NoIntent', STATES.QUESTIONS.GET_QUESTIONS_YES_NO)) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  async handle(handlerInput : HandlerInput) : Promise<Response> {
+
+    const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+    sessionAttributes['state'] = null;
+    handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+    
+    return handlerInput.responseBuilder    
+      .speak('Ok, whenever you want. When you will be ready, just say: Get questions. Bye !')
+      .getResponse();
+  },
+};

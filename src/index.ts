@@ -10,10 +10,11 @@ import { UserProfileSetupHandler } from "./controllers/options/userProfileSetupH
 import { ChangeLocationHandler, ResetLocationHandler } from "./controllers/options/changeLocationHandler";
 import { GetUserProfile } from "./controllers/options/getMyUserProfileInfosHandler";
 
-import { AskQuestionHandler } from './controllers/questions/askQuestionHandler';
-import { AnswerQuestionHandler, YesNoAnswerQuestionHandler } from './controllers/questions/answerQuestionHandler';
-import { GetQuestionsHandler } from './controllers/questions/getQuestionsHandler';
-import { GetAnswersHandler } from './controllers/questions/getAnswersHandler';
+import { AskQuestionHandler, NoAskQuestionHandler } from './controllers/questions/askQuestionHandler';
+import { AnswerQuestionHandler, NoAnswerQuestionHandler } from './controllers/questions/answerQuestionHandler';
+import { GetQuestionsHandler, NoGetQuestionsHandler } from './controllers/questions/getQuestionsHandler';
+import { GetAnswersHandler, NoGetAnswersHandler } from './controllers/questions/getAnswersHandler';
+import { WaitForAnswersHandler } from "./controllers/questions/waitForAnswers";
 
 
 // Import interceptors
@@ -27,7 +28,6 @@ import { HelpHandler } from "./controllers/genericHandlers/helpHandler";
 import { FallbackHandler } from "./controllers/genericHandlers/fallbackHandler";
 import { ExitHandler } from "./controllers/genericHandlers/exitHandler";
 import { ErrorHandler } from "./controllers/genericHandlers/errorHandler";
-
 
 let skill;
 
@@ -49,9 +49,13 @@ exports.handler = async (event, context) => {
         ReadLastMessagesHandler,
         AskQuestionHandler,
         AnswerQuestionHandler,
-        YesNoAnswerQuestionHandler,
         GetQuestionsHandler,
         GetAnswersHandler,
+        NoAskQuestionHandler,
+        NoAnswerQuestionHandler,
+        NoGetQuestionsHandler,
+        NoGetAnswersHandler,
+        WaitForAnswersHandler,
         HelpHandler,
         ExitHandler,
         FallbackHandler,

@@ -13,6 +13,8 @@ export const GetAnswersHandler : RequestHandler = {
         return true;
     } else if (isIntentAndState(handlerInput, 'AMAZON.YesIntent', STATES.QUESTIONS.NEXT_ANSWER_YES_NO)) {
         return true;
+    } else if (isIntentAndState(handlerInput, 'AMAZON.YesIntent', STATES.QUESTIONS.GET_ANSWERS_YES_NO)) {
+        return true;
     } else {
         return false;
     }
@@ -65,7 +67,7 @@ export const GetAnswersHandler : RequestHandler = {
 function buildAnswerSpeechText(answer: IAnswer, isLast: boolean, introMessage: string = '', repromptMessage: string = '') {
     return answer ?
     `<speak>
-
+        <audio src='soundbank://soundlibrary/human/amzn_sfx_crowd_cheer_med_01'/>
         <p> ${introMessage} </p>
 
         <p> 
@@ -87,3 +89,25 @@ function buildAnswerSpeechText(answer: IAnswer, isLast: boolean, introMessage: s
       </p>
     </speak>`;
 }
+
+export const NoGetAnswersHandler : RequestHandler = {
+    canHandle(handlerInput : HandlerInput) : boolean {
+      if (isIntentAndState(handlerInput, 'AMAZON.NoIntent', STATES.QUESTIONS.NEXT_ANSWER_YES_NO)) {
+          return true;
+      } else if (isIntentAndState(handlerInput, 'AMAZON.NoIntent', STATES.QUESTIONS.GET_ANSWERS_YES_NO)) {
+          return true;
+      } else {
+          return false;
+      }
+    },
+    async handle(handlerInput : HandlerInput) : Promise<Response> {
+  
+        const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
+        sessionAttributes['state'] = null;
+        handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
+        
+        return handlerInput.responseBuilder    
+          .speak('Ok, whenever you want. When you will be ready, just say: Get answers. Bye !')
+          .getResponse();
+    },
+  };

@@ -9,38 +9,30 @@ export const LaunchRequestHandler : RequestHandler = {
 
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-    const newUserMessage = `I see that you did not create your profile yet. Let's create one`;
-
     const speechText = 
      `<speak>
         <audio src='soundbank://soundlibrary/ambience/amzn_sfx_crowd_bar_01'/>
-        
 
-         <p>
+        <p>
           Welcome ${sessionAttributes['nickname'] ? 'back' : ''} to Tribe ${sessionAttributes['nickname'] ? `<break strength="weak"/> <emphasis level="moderate">${sessionAttributes['nickname']}</emphasis>` : ''} !
           
-          ${sessionAttributes['nickname'] ? '' : 'The skill that lets you communicate with your nearby  tribe in a funny and anonymous way.'}
+          ${sessionAttributes['nickname'] ? '' : 'The skill that lets you communicate with your nearby tribe in a funny and anonymous way.'}
         </p>
 
         <p>
-          ${sessionAttributes['nickname'] ? 'How can I help you ?' : newUserMessage}
+          ${sessionAttributes['nickname'] ? 'How can I help you ?' : `I see that you did not create your profile yet. Let's create one`}
         </p>
-
         
       </speak>`;
 
 
     if (sessionAttributes['nickname']) {
-      const response = handlerInput.responseBuilder.getResponse();
+      const repromptMessage = `You can ask questions, listen to answers and edit your profile, what would you like to do ?`;
+      const response = handlerInput.responseBuilder.reprompt(repromptMessage).getResponse();
       response.outputSpeech = {
         type: 'SSML',
         ssml: speechText,
       };
-      response.reprompt = {
-        // @ts-ignore
-        type: 'PlainText',
-        text: `You can ask questions, listen to answers and edit your profile, what would you like to do ?`
-      }
       return response;
     } 
       
