@@ -96,12 +96,5 @@ export const POLLY_VOICES = [
         country: `Australia`,
         gender: `woman`,
         name: `Nicole`,
-    },
-    {
-        lang: `en-AU`,
-        language: `English`,
-        country: `Australia`,
-        gender: `man`,
-        name: `Russel`,
-    },
+    }
 ]

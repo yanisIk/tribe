@@ -30,9 +30,18 @@ export const AnswerQuestionHandler : RequestHandler = {
 
         if (!answerString) {
             return handlerInput.responseBuilder
-                    .addElicitSlotDirective('answerString', {name: 'AnswerLastQuestion', confirmationStatus: 'NONE'})
-                    .withShouldEndSession(false)
-                    .speak(`What is your answer ?`)
+                    .addDelegateDirective(
+                    {
+                        name: 'AnswerLastQuestion',
+                        confirmationStatus: 'NONE',
+                        slots: {
+                            // @ts-ignore
+                            answerMessage: {
+                                name: 'answerMessage',
+                                confirmationStatus: 'NONE'
+                            }
+                        }
+                    })
                     .getResponse();
         }
 
@@ -67,9 +76,6 @@ export const AnswerQuestionHandler : RequestHandler = {
 
 export const YesNoAnswerQuestionHandler : RequestHandler = {
     canHandle(handlerInput : HandlerInput) : boolean {
-    //   if (isIntentAndState(handlerInput, 'AMAZON.YesIntent', STATES.QUESTIONS.ANSWER_YES_NO)) {
-    //       return true;
-    //   } else 
       if (isIntentAndState(handlerInput, 'AMAZON.NoIntent', STATES.QUESTIONS.ANSWER_YES_NO)) {
           return true;
       } else {
@@ -79,18 +85,6 @@ export const YesNoAnswerQuestionHandler : RequestHandler = {
     async handle(handlerInput : HandlerInput) : Promise<Response> {
   
       const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
-
-    //   if (isIntentAndState(handlerInput, 'AMAZON.YesIntent')) {
-        
-    //     sessionAttributes['previousIntent'] = 'YesAnswerQuestion';
-    //     sessionAttributes['state'] = STATES.ANSWERING_QUESTION;
-    //     handlerInput.attributesManager.setSessionAttributes(sessionAttributes);
-    //     return handlerInput.responseBuilder
-    //         .addDelegateDirective({name: 'AnswerLastQuestion', confirmationStatus: 'NONE'})
-    //         .withShouldEndSession(false)
-    //         .getResponse();
-
-    //   } else 
         
         if (isIntentAndState(handlerInput, 'AMAZON.NoIntent')) {
         

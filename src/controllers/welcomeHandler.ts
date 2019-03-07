@@ -9,7 +9,7 @@ export const LaunchRequestHandler : RequestHandler = {
 
     const sessionAttributes = handlerInput.attributesManager.getSessionAttributes();
 
-    const repromptText = `I see that you did not create your avatar yet. To do that, say: create my avatar`;
+    const newUserMessage = `I see that you did not create your profile yet. Let's create one`;
 
     const speechText = 
      `<speak>
@@ -23,26 +23,44 @@ export const LaunchRequestHandler : RequestHandler = {
         </p>
 
         <p>
-          ${sessionAttributes['nickname'] ? '' : repromptText}
+          ${sessionAttributes['nickname'] ? 'How can I help you ?' : newUserMessage}
         </p>
 
         
       </speak>`;
 
-    const response = handlerInput.responseBuilder.getResponse();
-    response.outputSpeech = {
-      type: 'SSML',
-      ssml: speechText,
-    };
 
-    // if no profile, ask to create an avatar in the reprompt
-    if (!sessionAttributes['nickname']) {
+    if (sessionAttributes['nickname']) {
+      const response = handlerInput.responseBuilder.getResponse();
+      response.outputSpeech = {
+        type: 'SSML',
+        ssml: speechText,
+      };
       response.reprompt = {
         // @ts-ignore
         type: 'PlainText',
-        text: repromptText
+        text: `You can ask questions, listen to answers and edit your profile, what would you like to do ?`
       }
-    }
+      return response;
+    } 
+      
+    // if new user
+    const response = handlerInput.responseBuilder
+                      .addDelegateDirective({name: 'SetupProfile', confirmationStatus: 'NONE',
+                        slots: {
+                          // @ts-ignore
+                          nickname: {
+                            name: 'nickname',
+                            confirmationStatus: 'NONE',
+                          },
+                          // @ts-ignore
+                          voiceGender: {
+                            name: 'voiceGender',
+                            confirmationStatus: 'NONE'
+                          }
+                        }})
+                      .speak(speechText)
+                      .getResponse();
 
     return response;
   },

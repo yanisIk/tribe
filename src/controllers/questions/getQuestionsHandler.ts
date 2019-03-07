@@ -44,7 +44,8 @@ export const GetQuestionsHandler : RequestHandler = {
 
     const introMessage = sessionAttributes['lastQuestions'] ? '' : 
                         `There ${lastQuestions.length + 1 > 1 ? 'are' : 'is'} ${lastQuestions.length + 1} question${lastQuestions.length + 1 > 1 ? 's' : ''} around you`;
-    const repromptMessage = `Answer or skip ?`;
+    const REPROMPT_MESSAGES = ['Answer or skip ?', 'Do you want to answer it ?'];
+    const repromptMessage = REPROMPT_MESSAGES[Math.floor(Math.random() * REPROMPT_MESSAGES.length)];
     const speechText = buildQuestionSpeechText(currentQuestion, isLast, introMessage, repromptMessage);
 
     sessionAttributes['lastQuestionId'] = currentQuestion ? currentQuestion._id : undefined;
